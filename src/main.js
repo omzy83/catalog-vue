@@ -5,13 +5,13 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Axios from 'axios'
+import axios from 'axios'
 
 Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
 
-Vue.prototype.$http = Axios;
+Vue.prototype.$http = axios;
 const token = localStorage.getItem('token')
 
 if (token) {
