@@ -1,24 +1,17 @@
-import Vue from 'vue'
 import axios from 'axios'
-
-const client = axios.create({
-  baseURL: 'http://localhost.test/catalog/public/api',
-  json: true
-})
 
 export default {
   async execute(method, resource, data) {
-    let accessToken = localStorage.getItem('token')
-
-    return client({
-      method,
+    return axios({
       url: resource,
       data,
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    }).then(req => {
-      return req.data
+      method
+    })
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error;
     })
   },
   getProducts() {

@@ -32,7 +32,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit('auth_request')
         axios({
-          url: 'http://localhost.test/catalog/public/api/user/login',
+          url: 'user/login',
           data: user,
           method: 'post'
         })
@@ -40,7 +40,7 @@ export default new Vuex.Store({
           const token = resp.data.access_token
           const user = resp.data.user
           localStorage.setItem('token', token)
-          axios.defaults.headers.common['Authorization'] = token
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
           commit('auth_success', token, user)
           resolve(resp)
         })

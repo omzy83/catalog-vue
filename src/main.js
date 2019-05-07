@@ -12,10 +12,12 @@ Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
 Vue.prototype.$http = axios;
+Vue.prototype.$http.defaults.baseURL = 'http://localhost.test/catalog/public/api'
+
 const token = localStorage.getItem('token')
 
 if (token) {
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
 new Vue({
