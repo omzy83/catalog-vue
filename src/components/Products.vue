@@ -1,36 +1,14 @@
 <template>
-  <div class="col mt-4">
-    <div class="mb-3">
-      <h1 class="h1 d-inline mr-2">Products</h1>
-      <b-spinner v-if="loading"></b-spinner>
+  <div class="container mt-4">
+    <div class="row mb-3">
+      <div class="col">
+        <h1 class="h1 d-inline mr-2">Products</h1>
+        <b-spinner v-if="loading"></b-spinner>
+      </div>
     </div>
-    <b-row>
+
+    <b-row class="mb-4">
       <b-col>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Created At</th>
-              <th class="text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="product in products.data" :key="product.id">
-              <td>{{ product.id }}</td>
-              <td>{{ product.name }}</td>
-              <td>{{ product.price }}</td>
-              <td>{{ product.created_at }}</td>
-              <td class="text-right">
-                <a href="#" @click.prevent="populateProductToEdit(product)">Edit</a> |
-                <a href="#" @click.prevent="deleteProduct(product.id)">Delete</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </b-col>
-      <b-col lg="3">
         <b-card :title="(model.id ? 'Edit Product #' + model.id : 'Add Product')">
           <div class="alert alert-danger" v-if="validationErrors">
             <ul class="pl-3 mb-0">
@@ -38,14 +16,20 @@
             </ul>
           </div>
           <form @submit.prevent="saveProduct">
-            <b-form-group label="Name" label-for="product-name">
-              <b-form-input id="product-name" type="text" v-model="model.name"></b-form-input>
-            </b-form-group>
-            <b-form-group label="Price" label-for="product-price">
-              <b-form-input id="product-price" type="text" v-model="model.price"></b-form-input>
-            </b-form-group>
+            <b-row>
+              <b-col>
+                <b-form-group label="Name" label-for="product-name">
+                  <b-form-input id="product-name" type="text" v-model="model.name"></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Price" label-for="product-price">
+                  <b-form-input id="product-price" type="text" v-model="model.price"></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
             <b-form-group label="Description" label-for="product-description">
-              <b-form-textarea id="product-description" rows="4" v-model="model.description"></b-form-textarea>
+              <b-form-textarea id="product-description" rows="3" v-model="model.description"></b-form-textarea>
             </b-form-group>
             <div>
               <b-btn type="submit" variant="success">Save Product</b-btn>
@@ -54,8 +38,46 @@
         </b-card>
       </b-col>
     </b-row>
+
+    <b-row>
+      <b-col>
+        <b-card>
+          <table class="table table-striped table-borderless mb-0">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Created At</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="product in products.data" :key="product.id">
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>£{{ product.price }}</td>
+                <td>{{ product.created_at }}</td>
+                <td class="text-right">
+                  <a href="#" @click.prevent="populateProductToEdit(product)">Edit</a> |
+                  <a href="#" @click.prevent="deleteProduct(product.id)">Delete</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </b-card>
+      </b-col>
+    </b-row>
   </div>
 </template>
+
+<style>
+@media (min-width: 1200px) {
+  .container{
+    max-width: 920px;
+  }
+}
+</style>
 
 <script>
 import api from '@/api/products'
@@ -74,7 +96,9 @@ export default {
   },
   methods: {
     async processSubmit() {
-      if (this.result.response.status == 422) {
+      let hasResponse = this.result.response !== undefined
+
+      if (hasResponse && this.result.response.status == 422) {
         let errors = Object.values(this.result.response.data.errors);
         errors = errors.flat();
         this.validationErrors = errors;
