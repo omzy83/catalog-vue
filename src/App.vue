@@ -3,11 +3,11 @@
     <b-navbar toggleable="md" type="dark" variant="dark">
       <div class="container">
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-        <b-navbar-brand to="/">Catalog Vue</b-navbar-brand>
-        <b-collapse is-nav id="nav_collapse">
+        <b-navbar-brand to="/" exact>Catalog Vue</b-navbar-brand>
+        <b-collapse is-nav id="nav_collapse" class="justify-content-end">
           <b-navbar-nav>
-            <b-nav-item to="/">Home</b-nav-item>
-            <b-nav-item to="/products">Products</b-nav-item>
+            <b-nav-item to="/" exact>Home</b-nav-item>
+            <b-nav-item to="/products" v-if="isLoggedIn">Products</b-nav-item>
             <b-nav-item to="/login" v-if="!isLoggedIn">Login</b-nav-item>
             <b-nav-item href="#" @click.prevent="logout" v-else>Logout</b-nav-item>
           </b-navbar-nav>
@@ -17,6 +17,13 @@
     <router-view />
   </div>
 </template>
+
+<style>
+  .navbar .navbar-nav .nav-link:focus,
+  .navbar .navbar-nav .nav-link.router-link-active {
+    color: #fff;
+  }
+</style>
 
 <script>
 export default {

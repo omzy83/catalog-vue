@@ -1,13 +1,32 @@
 <template>
-  <div class="container">
-    <form class="login" @submit.prevent="login">
-      <h1>Sign in</h1>
-      <label>Email</label>
-      <input required v-model="email" type="text" placeholder="Name">
-      <label>Password</label>
-      <input required v-model="password" type="password" placeholder="Password">
-      <button type="submit">Login</button>
-    </form>
+  <div class="container mt-4">
+    <b-row class="mb-4">
+      <b-col>
+        <b-card title="Login">
+          <form class="login" @submit.prevent="login">
+            <b-row>
+              <b-col>
+                <b-form-group label="Email" label-for="login-email">
+                  <b-form-input id="login-email" v-model="model.email" type="text"></b-form-input>
+                </b-form-group>
+              </b-col>
+
+              <b-col>
+                <b-form-group label="Password" label-for="login-password">
+                  <b-form-input id="login-password" v-model="model.password" type="password"></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+
+            <b-row>
+              <b-col>
+                <button type="submit">Login</button>
+              </b-col>
+            </b-row>
+          </form>
+        </b-card>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -15,17 +34,18 @@
   export default {
     data() {
       return {
-        email : "",
-        password : ""
+        model: {}
       }
     },
     methods: {
       login: function () {
-        let email = this.email
-        let password = this.password
-        this.$store.dispatch('login', { email, password })
-       .then(() => this.$router.push('/'))
-       .catch(err => console.log(err))
+        this.$store.dispatch('login', this.model)
+        .then(() => {
+          this.$router.push('/')
+        })
+        .catch(error => {
+          console.log(error)
+        })
       }
     }
   }
