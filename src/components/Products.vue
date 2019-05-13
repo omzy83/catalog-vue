@@ -12,7 +12,7 @@
         <b-card :title="(model.id ? 'Edit Product #' + model.id : 'Add Product')">
           <div class="alert alert-danger" v-if="validationErrors">
             <ul class="pl-3 mb-0">
-              <li v-for="(value, key, index) in validationErrors">{{ value }}</li>
+              <li v-for="(value, index) in validationErrors" :key="index">{{ value }}</li>
             </ul>
           </div>
           <form @submit.prevent="saveProduct">
@@ -99,9 +99,9 @@ export default {
       let hasResponse = this.result.response !== undefined
 
       if (hasResponse && this.result.response.status == 422) {
-        let errors = Object.values(this.result.response.data.errors);
-        errors = errors.flat();
-        this.validationErrors = errors;
+        let errors = Object.values(this.result.response.data.errors)
+        errors = errors.flat()
+        this.validationErrors = errors
       }
       else {
         this.model = {} // reset form
