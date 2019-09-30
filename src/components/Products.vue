@@ -82,7 +82,7 @@
 <script>
 import api from '@/api/products'
 export default {
-  data () {
+  data() {
     return {
       loading: false,
       products: [],

@@ -11,7 +11,7 @@ export default {
       return response.data
     })
     .catch(error => {
-      return error;
+      return error
     })
   },
   getProducts() {
