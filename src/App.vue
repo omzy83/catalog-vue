@@ -35,9 +35,9 @@ export default {
         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
           this.$store.dispatch('logout')
         }
-        throw err;
-      });
-    });
+        throw err
+      })
+    })
   },
   computed: {
     isLoggedIn: function() {
